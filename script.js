@@ -7,16 +7,13 @@ async function getInformation(){
     return (data)
 }
 async function displayImg() {
-    const product=await getInformation()
+    const product = await getInformation()
     console.log(product)
-    const img= document.createElement('img')
-    img.src=product.product.image_front_small_url
+    const img = document.createElement('img')
+    img.src = product.product.image_front_small_url
     showInformation.appendChild(img)
-     
+
 }
-
-
-
 
 displayImg()
 
