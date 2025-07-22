@@ -26,8 +26,17 @@ async function displayIngredients() {
         const product = await getInformation()
         console.log(product)
         const ingredients = document.createElement('p')
-        ingredients.innerText = product.product.ingredients_text_fr
+        ingredients.innerText = (`Ingridient du ${product.product.ingredients_debug[0]} : \n\n ${product.product.ingredients_text_fr}`)
         showInformation.appendChild(ingredients)
 
 }
 displayIngredients()
+
+async function displayGrade() {
+    const product = await getInformation()
+    const grade = document.createElement('p')
+    grade.innerText = (`Grade : \n ${product.product.nutriscore_grade}`)
+    showInformation.appendChild(grade)
+}
+
+displayGrade()
