@@ -15,5 +15,7 @@ async function displayImg() {
      
 }
 
-//`${produit.product.image_front_small_url}`
+
+
+
 displayImg()
