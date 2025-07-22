@@ -24,9 +24,8 @@ displayImg()
 async function displayIngredients() {
     
         const product = await getInformation()
-        console.log(product)
         const ingredients = document.createElement('p')
-        ingredients.innerText = (`Ingridient du ${product.product.ingredients_debug[0]} : \n\n ${product.product.ingredients_text_fr}`)
+        ingredients.innerText = (`Ingridient du ${product.product.product_name} : \n\n ${product.product.ingredients_text}`)
         showInformation.appendChild(ingredients)
 
 }
