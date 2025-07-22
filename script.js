@@ -19,3 +19,15 @@ async function displayImg() {
 
 
 displayImg()
+
+
+async function displayIngredients() {
+    
+        const product = await getInformation()
+        console.log(product)
+        const ingredients = document.createElement('p')
+        ingredients.innerText = product.product.ingredients_text_fr
+        showInformation.appendChild(ingredients)
+
+}
+displayIngredients()
