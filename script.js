@@ -1,6 +1,6 @@
 
 const showInformation =document.getElementById("affichageinfo")
-const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3017760038331
+const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3257971309114
 async function getInformation(){
     const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
     const data = await response.json()
@@ -45,7 +45,7 @@ async function packaging() {
     for (let i = 0; i < product.product.packaging_tags.length; i++) {
         const packaging = document.createElement('li')
         if (product.product.packaging_tags[i].startsWith("fr")) {
-            packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(5)} `)
+            packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(3)} `)
         }
         emballage.appendChild(packaging)
     }
