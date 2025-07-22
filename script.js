@@ -37,14 +37,31 @@ async function displayGrade() {
 
 displayGrade()
 
+async function packaging() {
+    const product = await getInformation()
+    const emballage = document.getElementById('emballage')
+    // packaging.innerText = (`Type d'emballage : \n ${product.product.packaging_hierarchy} `)
+    console.log(product.product.packaging_tags[1])
+    for (let i = 0; i < product.product.packaging_tags.length; i++) {
+        const packaging = document.createElement('li')
+        if (product.product.packaging_tags[i].startsWith("fr")) {
+            packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(5)} `)
+        }
+        emballage.appendChild(packaging)
+    }
+
+}
+
+packaging()
+
 
 async function alertAllergens() {
     const product = await getInformation()
     const allergens = document.createElement('p')
     if(product.product.allergens_from_ingredients === ''){
-        allergens.innerText = "produit ne contient pas d'allergens"
+        allergens.innerText = "produit ne contient pas d'allergènes"
     }else{
-        allergens.innerText=` Les ingredient allegens du produit : \n ${product.product.allergens_from_ingredients}`
+        allergens.innerText=` Les ingredient allergènes du produit : \n ${product.product.allergens_from_ingredients}`
     }
     showInformation.appendChild(allergens)
 }
