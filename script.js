@@ -33,9 +33,11 @@ btnStart.addEventListener('click',()=>{
 
     displayImg(code)
     displayIngredients(code)
+    ingredients(code)
     displayGrade(code)
     packaging(code)
     alertAllergens(code)
+    
 
   })
 })
@@ -81,14 +83,21 @@ async function packaging(productCode) {
     const product = await getInformation(productCode)
     const emballage = document.getElementById('emballage')
     // packaging.innerText = (`Type d'emballage : \n ${product.product.packaging_hierarchy} `)
-    console.log(product.product.packaging_tags[1])
-    for (let i = 0; i < product.product.packaging_tags.length; i++) {
-        const packaging = document.createElement('li')
+    if(!product.product.packaging_tags){
+        const packaging = document.createElement('p')
+        packaging.innerHTML= "pas de consigne pour l'emballage, fais le maximum pour le trier"
+        emballage.appendChild(packaging)
+    }else{
+         for (let i = 0; i < product.product.packaging_tags.length; i++) {
+        
         if (product.product.packaging_tags[i].startsWith("fr")) {
+            const packaging = document.createElement('li')
             packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(3)} `)
         }
         emballage.appendChild(packaging)
     }
+    }
+   
 
 }
 
@@ -106,27 +115,35 @@ async function alertAllergens(productCode) {
     showInformation.appendChild(allergens)
 }
 
-// alertAllergens()
+// alertAllergens()///////////////////////////////////////
+async function ingredients(productCode) {
+    const product = await getInformation(productCode)
 
+    const ingredientInfo=product.product.ingredients.map(ingredient => {return {
+        nom: ingredient.text,
+        percent : ingredient.percent_estimate}
+    });
+    
+   console.log("Tableau des ingrédients :", ingredientInfo);
 
-  const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart');
 
   new Chart(ctx, {
-    type: 'bar',
+    type: 'doughnut',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+        labels: ingredientInfo.map(row => row.nom),
+        datasets: [
+          {
+            label: 'quantitie de chaque ingredient',
+            data: ingredientInfo.map(row => row.percent)
+          }
+        ]
       }
-    }
   });
+  showInformation.appendChild(ctx)
+}
+
+
+
+ 
 //alertAllergens()
