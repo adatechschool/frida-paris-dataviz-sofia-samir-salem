@@ -93,8 +93,9 @@ async function packaging(productCode) {
         if (product.product.packaging_tags[i].startsWith("fr")) {
             const packaging = document.createElement('li')
             packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(3)} `)
+            emballage.appendChild(packaging)
         }
-        emballage.appendChild(packaging)
+        
     }
     }
    
