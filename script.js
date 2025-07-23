@@ -1,6 +1,6 @@
 
 const showInformation =document.getElementById("affichageinfo")
-const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3257971309114
+const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3017624010701
 async function getInformation(){
     const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
     const data = await response.json()
@@ -67,3 +67,25 @@ async function alertAllergens() {
 }
 
 alertAllergens()
+
+
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
