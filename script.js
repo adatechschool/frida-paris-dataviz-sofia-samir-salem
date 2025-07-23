@@ -1,13 +1,53 @@
-
 const showInformation =document.getElementById("affichageinfo")
-const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3017624010701
-async function getInformation(){
+// const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331*/  3017624010701
+//const productCode= /* 9002515600530 3497911219121 3017624010701 3017760038331 3257971309114 */   3017624010701
+const btnStart = document.getElementById("startcamera")
+const cameraResultat = document.getElementById("cameraresult")
+const displayCamera = document.getElementById('zonecamera')
+
+btnStart.addEventListener('click',()=>{
+    displayCamera.style.display='block'
+    Quagga.init({
+    inputStream : {
+      name : "Live",
+      type : "LiveStream",
+      target: document.querySelector('#zonecamera') ,
+      constraints: {facingMode: "environment"}
+    },
+    decoder : {
+      readers : ["ean_reader","upc_reader","code_128_reader"]
+    }
+  }, function(err) {
+      if (err) {
+          console.log(err);
+          return
+      }
+      console.log("Initialization finished. Ready to start");
+      Quagga.start();
+  })
+  Quagga.onDetected(resultat=>{
+    code = resultat.codeResult.code
+    cameraResultat.innerText= `le code barre detecte : ${code}`
+    Quagga.stop()
+    displayCamera.style.display= 'none'
+
+    displayImg(code)
+    displayIngredients(code)
+    displayGrade(code)
+    packaging(code)
+    alertAllergens(code)
+
+  })
+})
+
+
+async function getInformation(productCode){
     const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
     const data = await response.json()
     return (data)
 }
-async function displayImg() {
-    const product = await getInformation()
+async function displayImg(productCode) {
+    const product = await getInformation(productCode)
     console.log(product)
     const img = document.createElement('img')
     img.src = product.product.image_front_small_url
@@ -15,30 +55,30 @@ async function displayImg() {
 
 }
 
-displayImg()
+//displayImg()
 
 
-async function displayIngredients() {
+async function displayIngredients(productCode) {
     
-        const product = await getInformation()
+        const product = await getInformation(productCode)
         const ingredients = document.createElement('p')
         ingredients.innerText = (`Ingredient : \n\n ${product.product.ingredients_text}`)
         showInformation.appendChild(ingredients)
 
 }
-displayIngredients()
+//displayIngredients()
 
-async function displayGrade() {
-    const product = await getInformation()
+async function displayGrade(productCode) {
+    const product = await getInformation(productCode)
     const grade = document.createElement('p')
     grade.innerText = (`Grade : \n ${product.product.nutriscore_grade}`)
     showInformation.appendChild(grade)
 }
 
-displayGrade()
+//displayGrade()
 
-async function packaging() {
-    const product = await getInformation()
+async function packaging(productCode) {
+    const product = await getInformation(productCode)
     const emballage = document.getElementById('emballage')
     // packaging.innerText = (`Type d'emballage : \n ${product.product.packaging_hierarchy} `)
     console.log(product.product.packaging_tags[1])
@@ -52,11 +92,11 @@ async function packaging() {
 
 }
 
-packaging()
+//packaging()
 
 
-async function alertAllergens() {
-    const product = await getInformation()
+async function alertAllergens(productCode) {
+    const product = await getInformation(productCode)
     const allergens = document.createElement('p')
     if(product.product.allergens_from_ingredients === ''){
         allergens.innerText = "produit ne contient pas d'allergènes"
@@ -66,7 +106,7 @@ async function alertAllergens() {
     showInformation.appendChild(allergens)
 }
 
-alertAllergens()
+// alertAllergens()
 
 
   const ctx = document.getElementById('myChart');
@@ -89,3 +129,4 @@ alertAllergens()
       }
     }
   });
+//alertAllergens()
