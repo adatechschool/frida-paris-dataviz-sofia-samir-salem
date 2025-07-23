@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="script.js" defer></script>
+    <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <h1>Scanner un code‑barres</h1>
+    <button id="startcamera">📷 Démarrer la caméra</button>
+    <div id="zonecamera"></div>
+    <p id="cameraresult">Aucun code détecté.</p>
+
     <div id="affichageinfo">affichage d'information <br>
     </div>
     <ul id="emballage"> <strong>Type d'emballage :</strong> </ul>
