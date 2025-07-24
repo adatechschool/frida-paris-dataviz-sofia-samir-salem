@@ -31,14 +31,16 @@ const displayCamera = document.getElementById('zonecamera')
 //     Quagga.stop()
 //     displayCamera.style.display = 'none'
 
-//     displayImg(code)
-//     displayIngredients(code)
-//     displayGrade(code)
-//     packaging(code)
-//     alertAllergens(code)
-//     analysisTags(Code)
-//   })
-// })
+    displayImg(code)
+    displayIngredients(code)
+    ingredients(code)
+    displayGrade(code)
+    packaging(code)
+    alertAllergens(code)
+    analysisTags(code)
+
+  })
+})
 
 
 async function getInformation(productCode) {
@@ -89,6 +91,29 @@ async function packaging(productCode) {
     }
     emballage.appendChild(packaging)
   }
+    const product = await getInformation(productCode)
+    const emballage = document.getElementById('emballage')
+    // packaging.innerText = (`Type d'emballage : \n ${product.product.packaging_hierarchy} `)
+    if(!product.product.packaging_tags){
+        const packaging = document.createElement('p')
+        packaging.innerHTML= "pas de consigne pour l'emballage, fais le maximum pour le trier"
+        emballage.appendChild(packaging)
+    }else{
+         for (let i = 0; i < product.product.packaging_tags.length; i++) {
+        
+        if (product.product.packaging_tags[i].startsWith("fr")) {
+            const packaging = document.createElement('li')
+            packaging.innerHTML = (` \n ${product.product.packaging_tags[i].slice(3)} `)
+            emballage.appendChild(packaging)
+        }
+        
+    }
+    }
+   
+
+    }
+  }
+
 
 }
 
@@ -106,10 +131,19 @@ async function alertAllergens(productCode) {
   showInformation.appendChild(allergens)
 }
 
-// alertAllergens()
+// alertAllergens()///////////////////////////////////////
+async function ingredients(productCode) {
+    const product = await getInformation(productCode)
 
+    const ingredientInfo=product.product.ingredients.map(ingredient => {return {
+        nom: ingredient.text,
+        percent : ingredient.percent_estimate}
+    });
+    
+   console.log("Tableau des ingrédients :", ingredientInfo);
 
 const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart');
 
 new Chart(ctx, {
   type: 'bar',
@@ -129,6 +163,60 @@ new Chart(ctx, {
     }
   }
 });
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ingredientInfo.map(row => row.nom),
+        datasets: [
+          {
+            label: 'quantitie de chaque ingredient',
+            data: ingredientInfo.map(row => row.percent)
+          }
+        ]
+      }
+  });
+  showInformation.appendChild(ctx)
+}
+
+async function analysisTags(productCode) {
+  const product = await getInformation(productCode);
+  const tagVeg = document.createElement('ul')
+  const tags = product.product.ingredients_analysis_tags;
+
+  if(tags.includes("en:vegan")){
+    const isVegan=document.createElement('el')
+    isVegan.innerHTML= " Ce produit est <strong> VEGAN </strong>";
+    tagVeg.appendChild(isVegan)
+  }else if(tags.includes("en:non-vegan")){
+    const isVegan=document.createElement('el')
+    isVegan.innerHTML= "Ce produit est <strong> NON VEGAN </strong>";
+    tagVeg.appendChild(isVegan)
+  } else{
+    const isVegan=document.createElement('el')
+    isVegan.innerText= ` pas d'information concernat ce produit s'il est vegan ou pas`;
+    tagVeg.appendChild(isVegan)
+  }
+  showInformation.appendChild(tagVeg)
+
+
+  const tagVegetarien = document.createElement('ul')
+   if(tags.includes("en:vegetarian")){
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerHTML= " Ce produit est <strong> VEGETARIEN </strong>";
+    tagVegetarien.appendChild(isVegetarian)
+  }else if(tags.includes("en:non-vegetarian")){
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerHTML= "Ce produit est <strong> NON VEGETARIEN </strong>";
+    tagVegetarien.appendChild(isVegetarian)
+  } else{
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerText= ` pas d'information concernat ce produit s'il est vegetarien ou pas`;
+    tagVegetarien.appendChild(isVegetarian)
+  }
+  showInformation.appendChild(tagVegetarien)
+}
+
+ 
 //alertAllergens()
 
 const code = 3270190217190;
