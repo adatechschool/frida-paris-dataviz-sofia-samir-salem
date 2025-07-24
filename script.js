@@ -37,7 +37,7 @@ btnStart.addEventListener('click',()=>{
     displayGrade(code)
     packaging(code)
     alertAllergens(code)
-    
+    analysisTags(code)
 
   })
 })
@@ -144,7 +144,43 @@ async function ingredients(productCode) {
   showInformation.appendChild(ctx)
 }
 
+async function analysisTags(productCode) {
+  const product = await getInformation(productCode);
+  const tagVeg = document.createElement('ul')
+  const tags = product.product.ingredients_analysis_tags;
 
+  if(tags.includes("en:vegan")){
+    const isVegan=document.createElement('el')
+    isVegan.innerHTML= " Ce produit est <strong> VEGAN </strong>";
+    tagVeg.appendChild(isVegan)
+  }else if(tags.includes("en:non-vegan")){
+    const isVegan=document.createElement('el')
+    isVegan.innerHTML= "Ce produit est <strong> NON VEGAN </strong>";
+    tagVeg.appendChild(isVegan)
+  } else{
+    const isVegan=document.createElement('el')
+    isVegan.innerText= ` pas d'information concernat ce produit s'il est vegan ou pas`;
+    tagVeg.appendChild(isVegan)
+  }
+  showInformation.appendChild(tagVeg)
+
+
+  const tagVegetarien = document.createElement('ul')
+   if(tags.includes("en:vegetarian")){
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerHTML= " Ce produit est <strong> VEGETARIEN </strong>";
+    tagVegetarien.appendChild(isVegetarian)
+  }else if(tags.includes("en:non-vegetarian")){
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerHTML= "Ce produit est <strong> NON VEGETARIEN </strong>";
+    tagVegetarien.appendChild(isVegetarian)
+  } else{
+    const isVegetarian=document.createElement('el')
+    isVegetarian.innerText= ` pas d'information concernat ce produit s'il est vegetarien ou pas`;
+    tagVegetarien.appendChild(isVegetarian)
+  }
+  showInformation.appendChild(tagVegetarien)
+}
 
  
 //alertAllergens()
