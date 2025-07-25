@@ -2,9 +2,21 @@ const showInformation = document.getElementById("affichageinfo")
 const btnStart = document.getElementById("startcamera")
 const cameraResultat = document.getElementById("cameraresult")
 const displayCamera = document.getElementById('zonecamera')
+const restartScan = document.getElementById('restartscan')
+const img = document.createElement('img')
+const ingredients = document.createElement('p')
+const grade = document.createElement('p')
+const emballage = document.getElementById('emballage')
+const allergens = document.createElement('p')
 
-btnStart.addEventListener('click', () => {
-  displayCamera.style.display = 'block'
+const isVegan = document.createElement('p')
+const isVegetarian = document.createElement('p')
+const packagingList = document.createElement('li')
+const packaging = document.createElement('p')
+const nameProduct = document.createElement('h1')
+let myChart = null
+
+function initialization() {
   Quagga.init({
     inputStream: {
       name: "Live",
@@ -21,17 +33,38 @@ btnStart.addEventListener('click', () => {
       return
     }
     console.log("Initialization finished. Ready to start");
-    Quagga.start();
+    Quagga.start()
+      ;
   })
-  Quagga.onDetected(resultat => {
-    code = resultat.codeResult.code
-    cameraResultat.innerText = `le code barre detecte : ${code}`
-    Quagga.stop()
-    displayCamera.style.display = 'none'
 
-    displayInformations(code)
+}
 
-  })
+restartScan.style.display = 'none'
+
+function handler(resultat) {
+  code = resultat.codeResult.code
+  cameraResultat.innerText = `le code barre detecte : ${code}`
+  Quagga.stop()
+  displayCamera.style.display = 'none'
+
+  displayInformations(code)
+}
+
+btnStart.addEventListener('click', () => {
+  restartScan.style.display = 'block'
+  btnStart.style.display = 'none'
+  displayCamera.style.display = 'block'
+  initialization()
+  Quagga.onDetected(handler)
+})
+
+restartScan.addEventListener('click', () => {
+  showInformation.innerHTML = ''
+  // cameraResultat.innerText = ''
+  displayCamera.style.display = 'block'
+  initialization()
+  Quagga.onDetected(handler)
+
 })
 
 async function getInformation(productCode) {
@@ -52,34 +85,31 @@ async function displayInformations(barCode) {
   try {
     const product = await getInformation(barCode)
     console.log(product)
-    const img = document.createElement('img')
-    const ingredients = document.createElement('p')
-    const grade = document.createElement('p')
-    const emballage = document.getElementById('emballage')
-    const allergens = document.createElement('p')
-    const infoChart = document.getElementById('myChart')
-    const isVegan = document.createElement('p')
-    const isVegetarian = document.createElement('p')
+    hideInformations()
 
+    nameProduct.innerText = (`\n ${product.product_name}`)
     img.src = product.image_front_small_url
-    ingredients.innerText = (`Ingredient : \n\n ${product.ingredients_text}`)
-    grade.innerText = (`Grade : \n ${product.nutriscore_grade}`)
+    ingredients.innerHTML = (`<strong> Ingrédients : </strong> \n\n ${product.ingredients_text}`)
+    grade.innerHTML = (`<strong> Indice nutri-score : </strong> \n ${product.nutriscore_grade}`)
+    
 
+    showInformation.appendChild(nameProduct)
     showInformation.appendChild(img)
     showInformation.appendChild(ingredients)
     showInformation.appendChild(grade)
+   
 
-
+    emballage.innerHTML = `<strong> Type d'emballage : </strong>`
     if (!product.packaging_tags) {
-      const packaging = document.createElement('p')
+      // const packaging = document.createElement('p')
       packaging.innerHTML = "pas de consigne pour l'emballage, fais le maximum pour le trier"
       emballage.appendChild(packaging)
     } else {
       for (let i = 0; i < product.packaging_tags.length; i++) {
         if (product.packaging_tags[i]) {
-          const packaging = document.createElement('li')
-          packaging.innerHTML = (` \n ${product.packaging_tags[i].slice(3)} `)
-          emballage.appendChild(packaging)
+          // const packagingList = document.createElement('li')
+          packagingList.innerHTML = (` \n ${product.packaging_tags[i].slice(3)} `)
+          emballage.appendChild(packagingList)
         }
 
       }
@@ -89,7 +119,7 @@ async function displayInformations(barCode) {
     if (product.allergens_from_ingredients === '') {
       allergens.innerText = "produit ne contient pas d'allergènes"
     } else {
-      allergens.innerText = ` Les ingredient allergènes du produit : \n ${product.allergens_from_ingredients}`
+      allergens.innerHTML = `<strong> Les ingrédients allergènes du produit : </strong> \n ${product.allergens_from_ingredients}`
     }
     showInformation.appendChild(allergens)
 
@@ -103,19 +133,40 @@ async function displayInformations(barCode) {
 
     console.log("Tableau des ingrédients :", ingredientInfo);
 
-    new Chart(infoChart, {
-      type: 'doughnut',
-      data: {
-        labels: ingredientInfo.map(row => row.nom),
-        datasets: [
-          {
-            label: 'quantitie de chaque ingredient',
-            data: ingredientInfo.map(row => row.percent)
-          }
-        ]
+    const infoChart = document.getElementById('myChart')
+   
+
+// Supprimer le graphe précédent s’il existe
+if (myChart !== null) {
+  myChart.destroy()
+  myChart = null
+}
+
+myChart = new Chart(infoChart, {
+  type: 'doughnut',
+  data: {
+    labels: ingredientInfo.map(row => row.nom),
+    datasets: [{
+      label: 'Quantité de chaque ingrédient (%)',
+      data: ingredientInfo.map(row => row.percent),
+      }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100
       }
-    });
-    showInformation.appendChild(infoChart)
+    }
+  }
+})
+
+
+
+   
+
+    // showInformation.appendChild(infoChart)
 
     const tags = product.ingredients_analysis_tags;
 
@@ -151,6 +202,24 @@ async function displayInformations(barCode) {
     console.log(error)
 
   }
+}
+
+function hideInformations() {
+  
+  img.innerHTML = ''
+  ingredients.innerHTML = ''
+  grade.innerHTML = ''
+  emballage.innerHTML = ''
+  allergens.innerHTML = ''
+  isVegan.innerHTML = ''
+  isVegetarian.innerHTML = ''
+  packagingList.innerHTML = ''
+  packaging.innerHTML = ''
+
+  if (myChart !== null) {
+  myChart.destroy()
+  myChart = null
+}
 }
 
 
