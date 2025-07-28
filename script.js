@@ -8,12 +8,13 @@ const ingredients = document.createElement('p')
 const grade = document.createElement('p')
 const emballage = document.getElementById('emballage')
 const allergens = document.createElement('p')
-
+const displayChart= document.getElementById("myChart")
 const isVegan = document.createElement('p')
 const isVegetarian = document.createElement('p')
 const packagingList = document.createElement('li')
 const packaging = document.createElement('p')
 const nameProduct = document.createElement('h1')
+
 let myChart = null
 
 function initialization() {
@@ -61,6 +62,7 @@ btnStart.addEventListener('click', () => {
 restartScan.addEventListener('click', () => {
   showInformation.innerHTML = ''
   // cameraResultat.innerText = ''
+  hideInformations()
   displayCamera.style.display = 'block'
   initialization()
   Quagga.onDetected(handler)
@@ -85,7 +87,7 @@ async function displayInformations(barCode) {
   try {
     const product = await getInformation(barCode)
     console.log(product)
-    hideInformations()
+    
 
     nameProduct.innerText = (`\n ${product.product_name}`)
     img.src = product.image_front_small_url
@@ -98,9 +100,10 @@ async function displayInformations(barCode) {
     showInformation.appendChild(ingredients)
     showInformation.appendChild(grade)
    
-
+    emballage.innerHTML=''
     emballage.innerHTML = `<strong> Type d'emballage : </strong>`
-    if (!product.packaging_tags) {
+    emballage.style.display='block'
+    if (!product.packaging_tags || product.packaging_tags.length === 0) {
       // const packaging = document.createElement('p')
       packaging.innerHTML = "pas de consigne pour l'emballage, fais le maximum pour le trier"
       emballage.appendChild(packaging)
@@ -137,6 +140,7 @@ async function displayInformations(barCode) {
    
 
 // Supprimer le graphe précédent s’il existe
+
 if (myChart !== null) {
   myChart.destroy()
   myChart = null
@@ -162,11 +166,11 @@ myChart = new Chart(infoChart, {
   }
 })
 
-
+displayChart.innerHTML=myChart
 
    
 
-    // showInformation.appendChild(infoChart)
+showInformation.appendChild(displayChart)
 
     const tags = product.ingredients_analysis_tags;
 
@@ -209,20 +213,19 @@ function hideInformations() {
   img.innerHTML = ''
   ingredients.innerHTML = ''
   grade.innerHTML = ''
-  emballage.innerHTML = ''
+  emballage.style.display = 'none'
   allergens.innerHTML = ''
   isVegan.innerHTML = ''
   isVegetarian.innerHTML = ''
   packagingList.innerHTML = ''
   packaging.innerHTML = ''
-
+  cameraResultat.innerHTML=''
   if (myChart !== null) {
   myChart.destroy()
   myChart = null
 }
+displayChart.innerHTML=''
 }
-
-
 
 
 
