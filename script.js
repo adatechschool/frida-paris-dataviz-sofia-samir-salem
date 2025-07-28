@@ -69,6 +69,46 @@ restartScan.addEventListener('click', () => {
 
 })
 
+async function fetchWithErrorHandling(url) {
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            // Personnalisation selon le code
+            switch (response.status) {
+                case 400:
+                    throw new Error("Requête incorrecte (400)");
+                case 401:
+                    throw new Error("Non autorisé (401)");
+                case 403:
+                    throw new Error("Accès interdit (403)");
+                case 404:
+                    throw new Error("Ressource non trouvée (404)");
+                case 500:
+                    throw new Error("Erreur serveur (500)");
+                default:
+                    throw new Error(`Erreur HTTP (${response.status})`);
+            }
+        }
+
+        const data = await response.json();
+        return data.product;
+
+    } catch (err) {
+        console.error("Erreur lors de la requête :", err.message);
+        return null;
+    }
+}
+
+
+
+async function getInformation(productCode) {
+    const response = await fetchWithErrorHandling(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
+    //console.log(response.status)
+    return response
+    
+}
+
 async function getInformation(productCode) {
   try {
     const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
@@ -105,7 +145,7 @@ async function displayInformations(barCode) {
     emballage.style.display='block'
     if (!product.packaging_tags || product.packaging_tags.length === 0) {
       // const packaging = document.createElement('p')
-      packaging.innerHTML = "pas de consigne pour l'emballage, fais le maximum pour le trier"
+      packaging.innerHTML = "Pas de consigne pour l'emballage, fais le maximum pour le trier"
       emballage.appendChild(packaging)
     } else {
       for (let i = 0; i < product.packaging_tags.length; i++) {
@@ -184,7 +224,7 @@ showInformation.appendChild(displayChart)
       showInformation.appendChild(isVegan)
     } else {
 
-      isVegan.innerText = ` pas d'information concernat ce produit s'il est vegan ou pas`;
+      isVegan.innerText = ` Pas d'informations concernant ce produit s'il est vegan ou pas`;
       showInformation.appendChild(isVegan)
     }
 
@@ -198,7 +238,7 @@ showInformation.appendChild(displayChart)
       showInformation.appendChild(isVegetarian)
     } else {
 
-      isVegetarian.innerText = ` pas d'information concernat ce produit s'il est vegetarien ou pas`;
+      isVegetarian.innerText = ` Pas d'informations concernant ce produit s'il est vegetarien ou pas`;
       showInformation.appendChild(isVegetarian)
     }
 
