@@ -1,3 +1,6 @@
+//import {hideInformations} from './hidden.js'
+
+
 // 🎬 Gestion de transition
 const scanView = document.getElementById('scanView')
 const ficheView = document.getElementById('ficheView')
@@ -135,7 +138,7 @@ async function displayInformations(barCode) {
   try {
     const product = await getInformation(barCode)
     console.log(product)
-    nameProduct.innerText = `${product.product_name}`
+    nameProduct.innerText = `${product.product_name_fr}`
     img.src = product.image_front_small_url
     console.log(img.src)
 
@@ -230,7 +233,6 @@ async function displayInformations(barCode) {
   }
 }
 
-// ♻️ Nettoyage
 function hideInformations() {
   img.innerHTML = ''
   ingredients.innerHTML = ''
@@ -249,6 +251,7 @@ function hideInformations() {
     myChart = null
   }
   displayChart.innerHTML = ''
-}
+} 
+
 
 
