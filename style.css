@@ -11,7 +11,7 @@ body {
   justify-content: center;
   gap: 40px;
   padding: 40px;
-  background-image: url('background.png');
+  background-image: url('/images/background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -102,7 +102,7 @@ body {
   border: 2px solid black;
   border-radius: 15px;
   padding: 30px;
-  width: 400px;
+  width: 700px;
   min-height: 600px;
   display: flex;
   flex-direction: column;
@@ -143,7 +143,7 @@ body {
     border: 2px solid black;
   border-radius: 15px;
   padding: 30px;
-  width: 400px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   gap: 25px;
