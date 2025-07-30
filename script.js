@@ -96,14 +96,37 @@ restartScan.addEventListener('click', () => {
   Quagga.onDetected(handler)
 })
 
+
+
+
+
 // 🌐 API Open Food Facts
 async function getInformation(productCode) {
   try {
     const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
+    if (!response.ok) {
+      // Personnalisation selon le code
+      switch (response.status) {
+        case 400:
+          throw new Error("Requête incorrecte (400)");
+        case 401:
+          throw new Error("Non autorisé (401)");
+        case 403:
+          throw new Error("Accès interdit (403)");
+        case 404:
+          throw new Error("Ressource non trouvée (404)");
+        case 500:
+          throw new Error("Erreur serveur (500)");
+        default:
+          throw new Error(`Erreur HTTP (${response.status})`);
+      }
+    }
+
     const data = await response.json()
     return data.product
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    console.error("Erreur lors de la requête :", err.message);
+    return null;
   }
 }
 
@@ -111,9 +134,11 @@ async function getInformation(productCode) {
 async function displayInformations(barCode) {
   try {
     const product = await getInformation(barCode)
-
+    console.log(product)
     nameProduct.innerText = `${product.product_name}`
     img.src = product.image_front_small_url
+    console.log(img.src)
+
     ingredients.innerHTML = `<strong>Ingrédients :</strong> ${product.ingredients_text}`
     grade.innerHTML = `<strong>Indice nutri-score :</strong> ${product.nutriscore_grade.toUpperCase()}`
 
