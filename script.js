@@ -1,6 +1,3 @@
-//import {hideInformations} from './hidden.js'
-
-
 // 🎬 Gestion de transition
 const scanView = document.getElementById('scanView')
 const ficheView = document.getElementById('ficheView')
@@ -24,19 +21,22 @@ const btnStart = document.getElementById("startcamera")
 const cameraResultat = document.getElementById("cameraresult")
 const displayCamera = document.getElementById('zonecamera')
 const restartScan = document.getElementById('restartscan')
+const emballage = document.getElementById('emballage')
+const displayChart = document.getElementById("myChart")
+const message = document.getElementById("messageaccueil")
+
+// Création éléments HTMl
 const img = document.createElement('img')
 const ingredients = document.createElement('p')
 const grade = document.createElement('p')
-const emballage = document.getElementById('emballage')
 const allergens = document.createElement('p')
-const displayChart = document.getElementById("myChart")
 const isVegan = document.createElement('p')
 const isVegetarian = document.createElement('p')
 const packagingList = document.createElement('li')
 const packaging = document.createElement('p')
 const nameProduct = document.createElement('h1')
 const nutriscoreImg = document.createElement('img')
-const message = document.getElementById("messageaccueil")
+
 nutriscoreImg.id = 'nutriscoreimg'
 
 let myChart = null
@@ -68,6 +68,7 @@ function initialization() {
 
 restartScan.style.display = 'none'
 displayCamera.style.display = 'none'
+
 // 📌 Quand un code est détecté
 function handler(resultat) {
   const code = resultat.codeResult.code
@@ -89,7 +90,7 @@ btnStart.addEventListener('click', () => {
   Quagga.onDetected(handler)
 })
 
-// 🔁 Réinitialiser
+// 🔁 Réinitialiser scan
 restartScan.addEventListener('click', () => {
   showInformation.innerHTML = ''
   displayCamera.style.display = 'block'
@@ -98,9 +99,6 @@ restartScan.addEventListener('click', () => {
   initialization()
   Quagga.onDetected(handler)
 })
-
-
-
 
 
 // 🌐 API Open Food Facts
@@ -147,7 +145,7 @@ async function displayInformations(barCode) {
 
     if (product.nutriscore_grade) {
       const gradeValue = product.nutriscore_grade.toLowerCase()
-      nutriscoreImg.src = `nutriscore-${gradeValue}.png`
+      nutriscoreImg.src = `/images/nutriscore-${gradeValue}.png`
       nutriscoreImg.style.display = 'block'
     }
 
@@ -213,7 +211,7 @@ async function displayInformations(barCode) {
     } else if (tags.includes("en:non-vegan")) {
       isVegan.innerHTML = "Ce produit est <strong> NON VEGAN </strong>"
     } else {
-      isVegan.innerText = "pas d'information concernant le caractère vegan"
+      isVegan.innerText = "Pas d'informations concernant le caractère vegan"
     }
 
     if (tags.includes("en:vegetarian")) {
@@ -221,7 +219,7 @@ async function displayInformations(barCode) {
     } else if (tags.includes("en:non-vegetarian")) {
       isVegetarian.innerHTML = "Ce produit est <strong> NON VEGETARIEN </strong>"
     } else {
-      isVegetarian.innerText = "pas d'information concernant le caractère végétarien"
+      isVegetarian.innerText = "Pas d'informations concernant le caractère végétarien"
     }
 
     showInformation.appendChild(isVegan)
@@ -233,6 +231,7 @@ async function displayInformations(barCode) {
   }
 }
 
+// Réinitialisation des éléments produits et charte
 function hideInformations() {
   img.innerHTML = ''
   ingredients.innerHTML = ''
@@ -251,7 +250,7 @@ function hideInformations() {
     myChart = null
   }
   displayChart.innerHTML = ''
-} 
+}
 
 
 
