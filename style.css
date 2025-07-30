@@ -1,5 +1,169 @@
-#zonecamera video {
-  width: 300px;
-  border: 2px solid #333;
-  margin-top: 10px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
 }
+
+body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px;
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.intro-texte {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+  font-size: 35px;
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.5;
+}
+
+
+/* 📷 Vue scan */
+#scanView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+
+/* ℹ️ Vue fiche */
+#ficheView {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Animation */
+.fade {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.show {
+  opacity: 1;
+}
+
+/* Caméra */
+#zonecamera {
+  width: 350px;
+  height: 350px;
+  border: 2px solid black;
+  border-radius: 10px;
+  margin: 20px auto;
+  overflow: hidden;
+  background-color: #eee;
+}
+
+#startcamera {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 50px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#restartscan {
+    
+  width: 250px;
+  height: 50px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+}
+
+/* Fiche produit */
+#affichageinfo {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: flex-start;
+  background-color: white;
+  position: relative;
+}
+
+#affichageinfo h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+#affichageinfo img {
+  max-width: 120px;
+  height: auto;
+  border: 2px solid black;
+  margin: 0 auto;
+  display: block;
+  border-radius: 15px
+}
+
+#affichageinfo p {
+  line-height: 1.6em;
+}
+
+#nutriscoreimg {
+  display: block;
+  max-width: 100px;
+  margin: 0 auto 10px auto;
+  height: auto;
+  border-radius: 15px
+}
+
+/* Emballage */
+#emballage {
+    border: 2px solid black;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: flex-start;
+  background-color: white;
+  position: relative;
+}
+
+
+/* Graphique 
+#myChart {
+  max-width: 350px;
+  margin: 20px auto;
+}*/
+
+/* Résultat scan */
+#cameraresult {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
