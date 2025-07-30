@@ -1,180 +1,169 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
 body {
-
-  background-image: url("depositphotos_119907996-stock-photo-healthy-food-mix.jpg");
-  background-repeat:no-repeat;
-  background-size: cover
-
-}
-
-
-/* Fiche produit */
-#affichageinfo {
-  max-width: 800px;
-  margin: 30px auto;
-  margin-right : 10%;
-  padding: 25px;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  box-sizing: border-box;
-}
-
-/* Titre produit */
-#affichageinfo h1 {
-  font-size: 2em;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #2c3e50;
-}
-
-/* Image */
-#affichageinfo img {
-  display: block;
-  margin: 0 auto 20px;
-  width: 100%;
-  max-width: 350px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Texte générique */
-#affichageinfo p {
-  font-size: 1.3rem;
-  line-height: 1.7;
-  margin-bottom: 15px;
-}
-
-#affichageinfo p strong {
-  color: #34495e;
-}
-
-/* Emballage */
- #emballage {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #eef5f9;
-  border-left: 5px solid #3498db;
-  border-radius: 5px;
-  font-size: 1rem;
-} 
-
-#emballage p,
-#emballage li {
-  margin-left: 10px;
-  font-style: italic;
-}
-
-/* Allergènes */
-#affichageinfo .allergenes {
-  background-color: #ffe6e6;
-  border-left: 5px solid #e74c3c;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Vegan / Végétarien */
-#affichageinfo .vegan {
-  background-color: #e0f8e9;
-  border-left: 5px solid #2ecc71;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-#affichageinfo .vegetarien {
-  background-color: #f1f8e0;
-  border-left: 5px solid #f39c12;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Graphique */
-#myChart {
-  display: block;
-  margin: 30px auto;
-  width: 100%;
-  max-width: 700px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 50px;
-  box-sizing: border-box;
-}
-
-/* Boutons */
-#startcamera, #restartscan {
-  margin: 10px auto;
-  margin-left : 8%;
   display: flex;
-  padding: 12px 20px;
-  background-color: #0eea54;
-  color: black;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1.5rem;
-  transition: background-color 0.2s ease;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px;
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-#startcamera:hover, #restartscan:hover {
-  background-color: #3498db;
+.intro-texte {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+  font-size: 35px;
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.5;
+}
+
+
+/* 📷 Vue scan */
+#scanView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+
+/* ℹ️ Vue fiche */
+#ficheView {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Animation */
+.fade {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.show {
+  opacity: 1;
 }
 
 /* Caméra */
 #zonecamera {
-  display: flex;
-  margin: 20px auto;
-  padding: 15px;
+  width: 350px;
+  height: 350px;
+  border: 2px solid black;
   border-radius: 10px;
-  box-sizing: border-box;
+  margin: 20px auto;
+  overflow: hidden;
+  background-color: #eee;
 }
 
-/* Responsive media queries */
-@media (max-width: 768px) {
-  #affichageinfo {
-    padding: 20px;
-  }
-
-  #affichageinfo h1 {
-    font-size: 1.6em;
-  }
-
-  #affichageinfo p {
-    font-size: 0.95rem;
-  }
-
-  #myChart {
-    padding: 10px;
-  }
-
-  #startcamera, #restartscan {
-    width: 100%;
-    font-size: 1rem;
-  }
+#startcamera {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 50px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  #affichageinfo {
-    padding: 15px;
-  }
-
-  #affichageinfo h1 {
-    font-size: 1.4em;
-  }
-
-  #affichageinfo img {
-    max-width: 150px;
-  }
-
-  #startcamera, #restartscan {
-    font-size: 1rem;
-    padding: 10px;
-  }
+#restartscan {
+    
+  width: 250px;
+  height: 50px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
 }
 
+/* Fiche produit */
+#affichageinfo {
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: flex-start;
+  background-color: white;
+  position: relative;
+}
+
+#affichageinfo h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+#affichageinfo img {
+  max-width: 120px;
+  height: auto;
+  border: 2px solid black;
+  margin: 0 auto;
+  display: block;
+  border-radius: 15px
+}
+
+#affichageinfo p {
+  line-height: 1.6em;
+}
+
+#nutriscoreimg {
+  display: block;
+  max-width: 100px;
+  margin: 0 auto 10px auto;
+  height: auto;
+  border-radius: 15px
+}
+
+/* Emballage */
+#emballage {
+    border: 2px solid black;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: flex-start;
+  background-color: white;
+  position: relative;
+}
+
+
+/* Graphique 
+#myChart {
+  max-width: 350px;
+  margin: 20px auto;
+}*/
+
+/* Résultat scan */
 #cameraresult {
-  display : flex ;
-  margin-left : 9%;
-
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: bold;
 }
+

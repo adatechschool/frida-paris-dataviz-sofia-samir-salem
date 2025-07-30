@@ -1,4 +1,21 @@
+// 🎬 Gestion de transition
+const scanView = document.getElementById('scanView')
+const ficheView = document.getElementById('ficheView')
 
+// 🔄 Animation de transition fondue
+function switchView(hideEl, showEl) {
+  hideEl.classList.remove('show')
+  hideEl.classList.add('fade')
+
+  setTimeout(() => {
+    hideEl.style.display = 'none'
+    showEl.style.display = 'flex'
+    showEl.classList.add('show')
+    showEl.classList.remove('fade')
+  }, 400)
+}
+
+// 🔧 Éléments HTML
 const showInformation = document.getElementById("affichageinfo")
 const btnStart = document.getElementById("startcamera")
 const cameraResultat = document.getElementById("cameraresult")
@@ -15,64 +32,78 @@ const isVegetarian = document.createElement('p')
 const packagingList = document.createElement('li')
 const packaging = document.createElement('p')
 const nameProduct = document.createElement('h1')
+const nutriscoreImg = document.createElement('img')
+const message = document.getElementById("messageaccueil")
+nutriscoreImg.id = 'nutriscoreimg'
+
 let myChart = null
 
+// 📷 Démarrage du scanner
 function initialization() {
   Quagga.init({
     inputStream: {
       name: "Live",
       type: "LiveStream",
       target: document.querySelector('#zonecamera'),
-      constraints: { facingMode: "environment" }
+      constraints: {
+        facingMode: "environment",
+        width: { min: 640 },
+        height: { min: 480 }
+      }
     },
     decoder: {
-      readers: ["ean_reader", "upc_reader", "code_128_reader"]
+      readers: ["ean_reader"]
     }
   }, function (err) {
     if (err) {
-      console.log(err);
+      console.log(err)
       return
     }
-    console.log("Initialization finished. Ready to start");
     Quagga.start()
-      ;
   })
-
 }
 
 restartScan.style.display = 'none'
-
+displayCamera.style.display = 'none'
+// 📌 Quand un code est détecté
 function handler(resultat) {
-  code = resultat.codeResult.code
-  cameraResultat.innerText = `le code barre détècté : ${code}`
+  const code = resultat.codeResult.code
+  cameraResultat.innerText = `le code barre détecté : ${code}`
+  showInformation.appendChild(cameraResultat)
   Quagga.stop()
-  displayCamera.style.display = 'none'
 
+  switchView(scanView, ficheView)
   displayInformations(code)
 }
 
+// ▶️ Lancement scan
 btnStart.addEventListener('click', () => {
+  message.style.display = 'none'
+  displayCamera.style.display = 'block'
   restartScan.style.display = 'block'
   btnStart.style.display = 'none'
-  displayCamera.style.display = 'block'
   initialization()
   Quagga.onDetected(handler)
 })
 
+// 🔁 Réinitialiser
 restartScan.addEventListener('click', () => {
   showInformation.innerHTML = ''
-  // cameraResultat.innerText = ''
-  hideInformations()
   displayCamera.style.display = 'block'
+  hideInformations()
+  switchView(ficheView, scanView)
   initialization()
   Quagga.onDetected(handler)
-
 })
 
-async function fetchWithErrorHandling(url) {
-  try {
-    const response = await fetch(url);
 
+
+
+
+// 🌐 API Open Food Facts
+async function getInformation(productCode) {
+  try {
+    const response = await fetch(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
     if (!response.ok) {
       // Personnalisation selon le code
       switch (response.status) {
@@ -91,84 +122,63 @@ async function fetchWithErrorHandling(url) {
       }
     }
 
-    const data = await response.json();
-    return data.product;
-
+    const data = await response.json()
+    return data.product
   } catch (err) {
     console.error("Erreur lors de la requête :", err.message);
     return null;
   }
 }
 
-
-async function getInformation(productCode) {
-  const response = await fetchWithErrorHandling(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
-  //console.log(response.status)
-  return response
-
-}
-
-
+// 📊 Affichage des infos produit
 async function displayInformations(barCode) {
-
   try {
     const product = await getInformation(barCode)
     console.log(product)
-
-    nameProduct.innerText = (`\n ${product.product_name}`)
+    nameProduct.innerText = `${product.product_name}`
     img.src = product.image_front_small_url
-    ingredients.innerHTML = (`<strong> Ingrédients : </strong> \n\n ${product.ingredients_text}`)
-    grade.innerHTML = (`<strong> Indice nutri-score : </strong> \n ${product.nutriscore_grade}`)
+    console.log(img.src)
 
-    showInformation.appendChild(nameProduct)
-    showInformation.appendChild(img)
-    showInformation.appendChild(ingredients)
-    showInformation.appendChild(grade)
+    ingredients.innerHTML = `<strong>Ingrédients :</strong> ${product.ingredients_text}`
+    grade.innerHTML = `<strong>Indice nutri-score :</strong> ${product.nutriscore_grade.toUpperCase()}`
 
-    emballage.innerHTML = ''
+    if (product.nutriscore_grade) {
+      const gradeValue = product.nutriscore_grade.toLowerCase()
+      nutriscoreImg.src = `nutriscore-${gradeValue}.png`
+      nutriscoreImg.style.display = 'block'
+    }
+
     emballage.innerHTML = `<strong> Type d'emballage : </strong>`
     emballage.style.display = 'block'
-    if (!product.packaging_tags || product.packaging_tags.length == 0) {
-      // const packaging = document.createElement('p')
-      packaging.innerHTML = "Pas de consigne pour l'emballage, fais le maximum pour le trier"
+
+    if (!product.packaging_tags || product.packaging_tags.length === 0) {
+      packaging.innerHTML = "pas de consigne pour l'emballage, fais le maximum pour le trier"
       emballage.appendChild(packaging)
     } else {
-      for (let i = 0; i < product.packaging_tags.length; i++) {
-        if (product.packaging_tags[i]) {
-          // const packagingList = document.createElement('li')
-          packagingList.innerHTML = (` \n ${product.packaging_tags[i].slice(3)} `)
+      for (let tag of product.packaging_tags) {
+        if (tag) {
+          packagingList.innerHTML = `\n ${tag.slice(3)} `
           emballage.appendChild(packagingList)
         }
-
       }
     }
 
+    allergens.innerHTML = product.allergens_from_ingredients === ''
+      ? "produit ne contient pas d'allergènes"
+      : `<strong> Les ingrédients allergènes du produit :</strong> \n ${product.allergens_from_ingredients}`
 
-    if (product.allergens_from_ingredients === '') {
-      allergens.innerText = "Produit ne contient pas d'allergènes"
-    } else {
-      allergens.innerHTML = `<strong> Les ingrédients allergènes du produit : </strong> \n ${product.allergens_from_ingredients.slice(3)}`
-    }
-    showInformation.appendChild(allergens)
-    const ingredientInfo = product.ingredients.map(ingredient => {
-      return {
-        nom: ingredient.text,
-        percent: ingredient.percent_estimate
-      }
-    });
+    const ingredientInfo = product.ingredients.map(ingredient => ({
+      nom: ingredient.text,
+      percent: ingredient.percent_estimate
+    }))
 
-    console.log("Tableau des ingrédients :", ingredientInfo);
-
-    const infoChart = document.getElementById('myChart')
-
-
-    // Supprimer le graphe précédent s’il existe
     if (myChart !== null) {
       myChart.destroy()
       myChart = null
+
     }
 
-    myChart = new Chart(infoChart, {
+    myChart = new Chart(displayChart, {
       type: 'doughnut',
       data: {
         labels: ingredientInfo.map(row => row.nom),
@@ -180,55 +190,48 @@ async function displayInformations(barCode) {
       options: {
         responsive: true,
         scales: {
-          y: {
-            beginAtZero: true,
-            max: 100
-          }
+          y: { beginAtZero: true, max: 100 }
         }
       }
     })
-    displayChart.innerHTML = myChart
 
+    showInformation.appendChild(nameProduct)
+    showInformation.appendChild(img)
+    showInformation.appendChild(ingredients)
+    showInformation.appendChild(grade)
+    showInformation.appendChild(nutriscoreImg)
+    showInformation.appendChild(allergens)
     showInformation.appendChild(displayChart)
 
-    const tags = product.ingredients_analysis_tags;
+    const tags = product.ingredients_analysis_tags
 
     if (tags.includes("en:vegan")) {
-
-      isVegan.innerHTML = " Ce produit est <strong> VEGAN </strong>";
-      showInformation.appendChild(isVegan)
+      isVegan.innerHTML = " Ce produit est <strong> VEGAN </strong>"
     } else if (tags.includes("en:non-vegan")) {
-
-      isVegan.innerHTML = "Ce produit est <strong> NON VEGAN </strong>";
-      showInformation.appendChild(isVegan)
+      isVegan.innerHTML = "Ce produit est <strong> NON VEGAN </strong>"
     } else {
-
-      isVegan.innerText = ` Pas d'informations concernant ce produit s'il est vegan ou pas`;
-      showInformation.appendChild(isVegan)
+      isVegan.innerText = "pas d'information concernant le caractère vegan"
     }
 
     if (tags.includes("en:vegetarian")) {
-
-      isVegetarian.innerHTML = " Ce produit est <strong> VEGETARIEN </strong>";
-      showInformation.appendChild(isVegetarian)
+      isVegetarian.innerHTML = " Ce produit est <strong> VEGETARIEN </strong>"
     } else if (tags.includes("en:non-vegetarian")) {
-
-      isVegetarian.innerHTML = "Ce produit est <strong> NON VEGETARIEN </strong>";
-      showInformation.appendChild(isVegetarian)
+      isVegetarian.innerHTML = "Ce produit est <strong> NON VEGETARIEN </strong>"
     } else {
-
-      isVegetarian.innerText = ` Pas d'informations concernant ce produit s'il est végétarien ou pas`;
-      showInformation.appendChild(isVegetarian)
+      isVegetarian.innerText = "pas d'information concernant le caractère végétarien"
     }
 
-  } catch (error) {
-    console.log(error.message)
+    showInformation.appendChild(isVegan)
+    showInformation.appendChild(isVegetarian)
 
+
+  } catch (error) {
+    console.log(error)
   }
 }
 
+// ♻️ Nettoyage
 function hideInformations() {
-
   img.innerHTML = ''
   ingredients.innerHTML = ''
   grade.innerHTML = ''
@@ -239,9 +242,13 @@ function hideInformations() {
   packagingList.innerHTML = ''
   packaging.innerHTML = ''
   cameraResultat.innerHTML = ''
+  nutriscoreImg.style.display = 'none'
+  nutriscoreImg.innerHTML = ''
   if (myChart !== null) {
     myChart.destroy()
     myChart = null
   }
   displayChart.innerHTML = ''
 }
+
+

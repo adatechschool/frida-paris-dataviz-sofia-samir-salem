@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scanner Produit</title>
     <script src="https://unpkg.com/quagga/dist/quagga.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <button id="startcamera">📷 Démarrer le scanne </button>
-    <button id="restartscan"> scanner un autre produit </button>
-    <div id="zonecamera"></div>
-    <p id="cameraresult"></p>
-    <div id="affichageinfo"><br>
+    <h1 id="messageaccueil" class="intro-texte">
+        Scannez, découvrez, mangez mieux 🍏<br>
+        Votre santé commence par une bonne information.
+    </h1>
+
+    <!-- 📷 Vue Scan Produit -->
+    <div id="scanView" class="show">
+        <div id="zonecamera"></div>
+        <button id="startcamera">📷 Scanner produit</button>
+        <p id="cameraresult"></p>
     </div>
-    <ul id="emballage"> <strong></strong> </ul>
-    <div>
-        <canvas id="myChart"></canvas>
+
+    <!-- ℹ️ Vue Fiche Produit -->
+    <div id="ficheView" class="fade">
+        <div id="affichageinfo">
+            <canvas id="myChart"></canvas>
+        </div>
+        <ul id="emballage"></ul>
+        <button id="restartscan">Scanner un autre produit</button>
     </div>
+
 </body>
 
 </html>

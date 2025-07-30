@@ -35,3 +35,18 @@ Mercredi 23/07/2025
 - Catégories spécifiques (vegan, végétarien, etc.)
 - Liste des ingrédients avec pourcentages sous forme de graphique (camembert)
 - parcourir bibliothèque des chartes graphiques : https://www.chartjs.org/docs/latest/getting-started/ 
+
+
+Jeudi 24/07/2025
+
+- Revue et correction code function Vegan/végétarien 
+- création d'une branche "refacto" avec le code en refacto
+- try and catch 
+
+Vendredi 25/07/2025
+
+**objectifs** 
+- Essayer plusieurs code-bares de produits différents
+- Cacher les textes HTML pour laisser apparaitre uniquement le scanne caméra
+- Local storage
+
