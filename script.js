@@ -106,7 +106,7 @@ async function getInformation(productCode) {
     const response = await fetchWithErrorHandling(`https://world.openfoodfacts.net/api/v2/product/${productCode}`)
     //console.log(response.status)
     return response
-    
+
 }
 
 async function getInformation(productCode) {
@@ -127,19 +127,19 @@ async function displayInformations(barCode) {
   try {
     const product = await getInformation(barCode)
     console.log(product)
-    
+
 
     nameProduct.innerText = (`\n ${product.product_name}`)
     img.src = product.image_front_small_url
     ingredients.innerHTML = (`<strong> Ingrédients : </strong> \n\n ${product.ingredients_text}`)
     grade.innerHTML = (`<strong> Indice nutri-score : </strong> \n ${product.nutriscore_grade}`)
-    
+
 
     showInformation.appendChild(nameProduct)
     showInformation.appendChild(img)
     showInformation.appendChild(ingredients)
     showInformation.appendChild(grade)
-   
+
     emballage.innerHTML=''
     emballage.innerHTML = `<strong> Type d'emballage : </strong>`
     emballage.style.display='block'
@@ -177,7 +177,7 @@ async function displayInformations(barCode) {
     console.log("Tableau des ingrédients :", ingredientInfo);
 
     const infoChart = document.getElementById('myChart')
-   
+
 
 // Supprimer le graphe précédent s’il existe
 
@@ -208,7 +208,7 @@ myChart = new Chart(infoChart, {
 
 displayChart.innerHTML=myChart
 
-   
+
 
 showInformation.appendChild(displayChart)
 
@@ -249,7 +249,7 @@ showInformation.appendChild(displayChart)
 }
 
 function hideInformations() {
-  
+
   img.innerHTML = ''
   ingredients.innerHTML = ''
   grade.innerHTML = ''

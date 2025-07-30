@@ -1,0 +1,203 @@
+/* html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+#startcamera {
+    border-radius: 40px;
+     border: 0px solid #000; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1em 2em;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 9999; 
+}
+ */
+
+/* General Body Styling */
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f8f8; /* Light background for a clean look */
+    color: #333; /* Dark grey for readability */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Logo Styling */
+.logo-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    max-width: 250px; /* Adjust size as needed */
+    height: auto;
+    display: block; /* Ensures centering works */
+    margin: 0 auto;
+}
+
+/* Buttons Styling */
+button {
+    background-color: #4CAF50; /* A shade of green for "conscious consumption" */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#restartscan {
+    background-color: #008CBA; /* A blue for "scan another" */
+}
+
+#restartscan:hover {
+    background-color: #007bb5;
+}
+
+/* Camera Zone */
+#zonecamera {
+    width: 100%;
+    max-width: 600px; /* Max width for camera feed */
+    height: 350px; /* Fixed height for camera feed */
+    background-color: #eee;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+    overflow: hidden; /* Ensure camera feed fits */
+    display: none; /* Hidden by default */
+}
+
+/* Camera Result Text */
+#cameraresult {
+    margin-top: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+}
+
+/* Information Display Area */
+#affichageinfo {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+#affichageinfo h1 {
+    color: #2c3e50; /* Darker blue for headings */
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#affichageinfo img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#affichageinfo p,
+#affichageinfo ul {
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #444;
+}
+
+#affichageinfo strong {
+    color: #2c3e50;
+}
+
+/* Packaging List */
+#emballage {
+    list-style-type: none; /* Remove bullet points */
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+#emballage li {
+    background-color: #f0f0f0;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border-left: 3px solid #607D8B; /* A subtle accent color */
+}
+
+/* Chart Styling */
+#myChart {
+    margin-top: 25px;
+    max-width: 100%; /* Ensure chart is responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    #affichageinfo {
+        padding: 20px;
+    }
+
+    #affichageinfo h1 {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .logo-container img {
+        max-width: 200px;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    #affichageinfo h1 {
+        font-size: 1.5em;
+    }
+
+    #affichageinfo p,
+    #affichageinfo ul {
+        font-size: 0.95em;
+    }
+}
