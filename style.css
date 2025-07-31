@@ -102,7 +102,11 @@ body {
   border: 2px solid black;
   border-radius: 15px;
   padding: 30px;
+<<<<<<< HEAD
+  width: 750px;
+=======
   width: 700px;
+>>>>>>> 95cef45ed1f3841c1fd98ba708700ab6ac8aee66
   min-height: 600px;
   display: flex;
   flex-direction: column;
@@ -143,7 +147,11 @@ body {
     border: 2px solid black;
   border-radius: 15px;
   padding: 30px;
+<<<<<<< HEAD
+  width: 750px;
+=======
   width: 700px;
+>>>>>>> 95cef45ed1f3841c1fd98ba708700ab6ac8aee66
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -153,11 +161,6 @@ body {
 }
 
 
-/* Graphique 
-#myChart {
-  max-width: 350px;
-  margin: 20px auto;
-}*/
 
 /* Résultat scan */
 #cameraresult {
