@@ -190,9 +190,6 @@ async function displayInformations(barCode) {
       },
       options: {
         responsive: true,
-        scales: {
-          y: { beginAtZero: true, max: 100 }
-        }
       }
     })
 
